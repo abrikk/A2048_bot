@@ -1,0 +1,8 @@
+aiogram~=2.21
+aiogram-dialog~=1.5.1
+asyncpg~=0.25.0
+alembic~=1.8.0
+aioredis~=2.0
+environs~=9.0
+
+SQLAlchemy~=1.4.32

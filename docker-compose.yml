@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+    redis:
+        image: redis:6-alpine
+        restart: "unless-stopped"
+        environment:
+            VOLUMES_DIR: ${VOLUMES_DIR}
+        volumes:
+            - "~/${VOLUMES_DIR}/redis-data:/data"
+        ports:
+            - "5379:6379"
+        command: "redis-server"
+    db:
+        container_name: database
+        image: postgres:14-alpine
+        restart: "unless-stopped"
+        environment:
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASS}
+            POSTGRES_DB: ${DB_NAME}
+            VOLUMES_DIR: ${VOLUMES_DIR}
+        volumes:
+            - "~/${VOLUMES_DIR}/pg-data:/var/lib/postgresql/data"
+            - "~/${VOLUMES_DIR}/backups:/backups"
+        ports:
+            - "5555:5432"
+    db_migration:
+        container_name: database_migration
+        build:
+            context: .
+        restart: "on-failure"
+        depends_on:
+            -   db
+        env_file: .env
+        command: sh -c "python -m alembic upgrade head"
+    dbbackup:
+       container_name: database_backups
+       image: prodrigestivill/postgres-backup-local:14-alpine
+       restart: always
+       volumes:
+         - "~/${VOLUMES_DIR}/backups:/backups"
+       environment:
+         - POSTGRES_HOST=db
+         - POSTGRES_DB=${DB_NAME}
+         - POSTGRES_USER=${DB_USER}
+         - POSTGRES_PASSWORD=${DB_PASS}
+         - SCHEDULE=@daily
+         - HEALTHCHECK_PORT=8080
+    bot:
+        container_name: tgbot
+        build:
+            context: .
+        stop_signal: SIGINT
+        restart: "unless-stopped"
+        env_file: .env
+        depends_on:
+            - db
+            - db_migration

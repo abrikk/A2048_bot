@@ -1,0 +1,6 @@
+ADMIN = "admin"
+USER = "user"
+FOUR_BY_FOUR = "four_by_four"
+FIVE_BY_FIVE = "five_by_five"
+SIX_BY_SIX = "six_by_six"
+SEVEN_BY_SEVEN = "seven_by_seven"
