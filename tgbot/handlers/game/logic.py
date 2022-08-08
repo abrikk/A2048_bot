@@ -70,6 +70,7 @@ def get_actions(style: str = CLASSIC_CONTROLLERS) -> dict:
 def convert_dict_to_matrix(board_dict: dict) -> np.ndarray:
     board: dict = {k: v for k, v in board_dict.items() if k not in ("score", "game_over", "max_num", "moves_made")}
     board_matrix: np.ndarray = np.zeros([len(board), len(board)], dtype=int)
+
     for i, row in enumerate(sorted(board.items())):
         board_matrix[i] = row[1]
 

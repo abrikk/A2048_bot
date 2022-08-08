@@ -39,7 +39,7 @@ async def get_game_data(dialog_manager: DialogManager, **_kwargs):
                 f"🔥 Score: {score}"
 
     if user.theme == VITALII_THEME:
-        game_text += "\n\n" + hcode(draw_table(convert_dict_to_matrix(prepare_board(dialog_data, user.numbers_style))))
+        game_text += "\n\n" + hcode(draw_table(prepare_board(dialog_data, user.numbers_style)))
 
     if game_over:
         game_text += "\n\n❗️ Game over ❗️"

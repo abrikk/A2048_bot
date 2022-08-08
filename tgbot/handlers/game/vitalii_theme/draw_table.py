@@ -1,11 +1,13 @@
+from typing import Union, List
+
 import numpy as np
 
 
 def horizontal_line(
-    field: np.array,
+    field: Union[List[List[int]], np.array, dict],
     c_symbol: str,
     h_symbol: str,
-    min_cell_sizes: list[int],
+    min_cell_sizes: List[int],
 ):
     line = []
     for x in range(len(field)):
@@ -16,14 +18,15 @@ def horizontal_line(
 
 
 def draw_table(
-    field: np.ndarray,
+    field: Union[List[List[int]], np.array, dict],
     min_cell_size=5,
     c_symbol="+",
     h_symbol="-",
     v_symbol="|",
     zero_placeholder=" ",
 ):
-
+    if isinstance(field, dict):
+        field = [[i[1] for i in v] for k, v in field.items()]
     min_cell_sizes = []
     rotated_field = [list(row) for row in zip(*reversed(field))]
     for row in rotated_field:
