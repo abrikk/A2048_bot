@@ -10,13 +10,15 @@ from tgbot.config import Config
 async def set_default_commands(bot: Bot, config: Config):
     usercommands = [
         BotCommand(command="start", description="Start bot"),
-        BotCommand(command="help", description="Help")
+        BotCommand(command="help", description="Help"),
+        BotCommand(command="finish_game", description="Finish Game")
     ]
     await bot.set_my_commands(usercommands, scope=BotCommandScopeDefault())
 
     admin_commands = [
         BotCommand(command="start", description="Start bot"),
-        BotCommand(command="help", description="Help")
+        BotCommand(command="help", description="Help"),
+        BotCommand(command="finish_game", description="Finish Game")
     ]
     try:
         for admin in config.tg_bot.admin_ids:

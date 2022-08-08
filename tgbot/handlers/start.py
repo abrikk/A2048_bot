@@ -19,6 +19,7 @@ async def start_bot(message: types.Message, config: Config, session, dialog_mana
             role: str = USER
 
         user = User(
+            active=True,
             user_id=user_id,
             first_name=message.from_user.first_name,
             username=message.from_user.username,
@@ -28,7 +29,6 @@ async def start_bot(message: types.Message, config: Config, session, dialog_mana
 
         session.add(user)
         await session.commit()
-
 
         await dialog_manager.start(state=Main.main, data={
             "first_name": user.first_name

@@ -8,6 +8,7 @@ from alembic import context
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 from tgbot.config import Config, load_config
+from tgbot.models.game_history import GameHistory
 from tgbot.services.db_base import Base
 from tgbot.models.user import User
 from tgbot.services.utils import make_connection_string

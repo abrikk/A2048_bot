@@ -52,8 +52,8 @@ async def main():
 
     register_all_middlewares(dp, sessionmaker, config)
     register_all_filters(dp)
-    register_all_dialogs(registry)
     register_all_handlers(dp)
+    register_all_dialogs(registry)
 
     # start
     try:
