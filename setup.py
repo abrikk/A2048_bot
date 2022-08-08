@@ -10,7 +10,7 @@ from tgbot.handlers.main_dialog import main_dialog
 from tgbot.handlers.my_history import my_history_dialog
 from tgbot.handlers.settings.settings import settings_dialog
 from tgbot.handlers.start import register_start
-# from tgbot.handlers.test import register_test
+from tgbot.handlers.test import register_test
 
 
 def register_all_dialogs(dialog_registry: DialogRegistry):
@@ -24,6 +24,6 @@ def register_all_dialogs(dialog_registry: DialogRegistry):
 def register_all_handlers(dp: Dispatcher):
     register_finish_game(dp)
     register_start(dp)
-    # register_test(dp)
+    register_test(dp)
     # register_error_handler(dp)
     register_is_active_user(dp)
