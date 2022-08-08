@@ -46,7 +46,8 @@ def get_actions(style: str = CLASSIC_CONTROLLERS) -> dict:
         # classic controllers
         directions: list[list[tuple]] = [
             [("empty", " "), ("vertical_up", "⬆️"), ("empty", " ")],
-            [("horizontal_left", "⬅️"), ("vertical_down", "⬇️"), ("horizontal_right", "➡️")]
+            [("horizontal_left", "⬅️"), ("vertical_down", "⬇️"), ("horizontal_right", "➡️")],
+            False
         ]
     elif style == VITALII_CONTROLLERS:
         # vitalii's controllers
