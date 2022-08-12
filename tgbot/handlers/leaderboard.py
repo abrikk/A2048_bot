@@ -5,6 +5,7 @@ from aiogram_dialog.widgets.text import Format, Const
 
 from tgbot.misc.states import Leaderboard, Main
 from tgbot.models.game_history import GameHistory
+from tgbot.models.user import User
 from tgbot.services.db_commands import DBCommands
 
 leaderboard_logo = hcode("""
@@ -28,18 +29,20 @@ rank_emojies: dict = {
 }
 
 
-def get_user_mention(id: int, full_name: str, last_name: str = None, username: str = None) -> str:
-    name = last_name and " ".join([full_name, last_name]) or full_name
+def get_user_mention(id: int, first_name: str, last_name: str = None, username: str = None) -> str:
+    name = last_name and " ".join([first_name, last_name]) or first_name
     if username:
         return hlink(name, f"t.me/{username}")
     else:
         return hlink(name, f"tg://user?id={id}")
 
 
-async def get_user_rank(mention: str, game_history: GameHistory, rank: int):
+async def get_user_rank(session, game_history: GameHistory, rank: int):
+    user: User = await session.get(User, game_history.user_id)
     rankt: str = rank_emojies.get(rank)
     size = f"{game_history.board_size}x{game_history.board_size}"
-    text = (f"{rankt} {mention}:\n"
+
+    text = (f"{rankt} {get_user_mention(user.user_id, user.first_name, user.last_name, user.username)}:\n"
             f"<code>\t  score: {game_history.score}\n"
             f"\tsize: {size}\n"
             f"\tmoves made: {game_history.moves_made}\n"
@@ -51,13 +54,14 @@ async def get_user_rank(mention: str, game_history: GameHistory, rank: int):
 
 async def get_leaderboard_text(dialog_manager: DialogManager, **_kwargs):
     db: DBCommands = dialog_manager.data.get("db_commands")
+    session = dialog_manager.data.get("session")
     game_history = await db.get_game_history()
     dialog_manager.event.from_user.get_mention()
     text = f"{leaderboard_logo}\n"
 
     if game_history:
         for rank, game_history in game_history:
-            text += await get_user_rank(dialog_manager.event.from_user.mention, game_history, rank) + "\n\n"
+            text += await get_user_rank(session, game_history, rank) + "\n\n"
 
     else:
         text += "No games yet"
